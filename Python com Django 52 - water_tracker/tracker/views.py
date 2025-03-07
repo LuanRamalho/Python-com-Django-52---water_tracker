@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import WaterConsumptionForm
 import matplotlib.pyplot as plt
 from io import BytesIO
@@ -37,3 +37,38 @@ def water_consumption_chart(request):
 
     # Retornar o gráfico como resposta HTTP
     return HttpResponse(buffer, content_type='image/png')
+
+def water_consumption_list(request):
+    query = request.GET.get('q', '')  # Obtém o termo de busca
+    consumptions = WaterConsumption.objects.all().order_by('-date')
+
+    if query:
+        consumptions = consumptions.filter(date__icontains=query)  # Filtra por data
+
+    for consumption in consumptions:
+        consumption.formatted_date = consumption.date.strftime('%d/%m/%Y')
+
+    return render(request, 'tracker/water_consumption_list.html', {
+        'consumptions': consumptions,
+        'query': query
+    })
+
+def edit_water_consumption(request, pk):
+    consumption = get_object_or_404(WaterConsumption, pk=pk)
+
+    if request.method == "POST":
+        form = WaterConsumptionForm(request.POST, instance=consumption)
+        if form.is_valid():
+            form.save()
+            return redirect('water_consumption_list')
+    else:
+        form = WaterConsumptionForm(instance=consumption)
+
+    return render(request, 'tracker/edit_water_consumption.html', {'form': form})
+
+def delete_water_consumption(request, pk):
+    consumption = get_object_or_404(WaterConsumption, pk=pk)
+    if request.method == "POST":
+        consumption.delete()
+        return redirect('water_consumption_list')
+    return render(request, 'tracker/delete_water_consumption.html', {'consumption': consumption})
