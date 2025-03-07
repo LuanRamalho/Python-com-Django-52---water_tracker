@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Excluir Consumo de Água</title>
+    <style>
+        body {
+            background-color: #ffebee;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #d32f2f;
+        }
+        p {
+            font-size: 18px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #b71c1c;
+        }
+        .cancel-button {
+            display: block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Confirmar Exclusão</h1>
+    <p>Tem certeza que deseja excluir este registro?</p>
+    <p><strong>Data:</strong> {{ consumption.date|date:"d/m/Y" }}</p>
+    <p><strong>Litros:</strong> {{ consumption.liters }} L</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Excluir</button>
+    </form>
+    <a href="{% url 'water_consumption_list' %}" class="cancel-button">Cancelar</a>
+</div>
+
+</body>
+</html>

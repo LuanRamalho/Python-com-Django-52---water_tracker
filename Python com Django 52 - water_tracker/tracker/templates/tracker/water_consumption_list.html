@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Consumo de Água</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .search-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .edit-button, .delete-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .edit-button {
+            background-color: #008CBA;
+            color: white;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Histórico de Consumo de Água</h1>
+
+    <div class="search-box">
+        <form method="GET">
+            <input type="text" name="q" placeholder="Buscar por data (DD/MM/YYYY)" value="{{ query }}">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <th>Data</th>
+            <th>Litros Consumidos</th>
+            <th>Ações</th>
+        </tr>
+        {% for consumption in consumptions %}
+        <tr>
+            <td>{{ consumption.formatted_date }}</td>
+            <td>{{ consumption.liters }} L</td>
+            <td>
+                <a href="{% url 'edit_water_consumption' consumption.pk %}" class="edit-button">Editar</a>
+                <a href="{% url 'delete_water_consumption' consumption.pk %}" class="delete-button">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <a href="{% url 'add_water_consumption' %}">
+        <button>Voltar</button>
+    </a>
+</div>
+
+</body>
+</html>
