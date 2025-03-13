@@ -15,28 +15,20 @@ def add_water_consumption(request):
         form = WaterConsumptionForm()
     return render(request, 'tracker/add_water_consumption.html', {'form': form})
 
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import WaterConsumption
+
 def water_consumption_chart(request):
-    # Consultar os dados de consumo
-    data = WaterConsumption.objects.all()
-    dates = [entry.date for entry in data]
+    # Pegando os dados do modelo
+    data = WaterConsumption.objects.all().order_by('date')
+    dates = [entry.date.strftime('%d/%m/%Y') for entry in data]
     liters = [entry.liters for entry in data]
 
-    # Criar o gráfico
-    plt.figure(figsize=(10, 6))
-    plt.plot(dates, liters, marker='o', linestyle='-', color='b')
-    plt.title('Consumo de Água ao Longo do Tempo')
-    plt.xlabel('Data')
-    plt.ylabel('Litros')
-    plt.xticks(rotation=45)
+    return JsonResponse({'dates': dates, 'liters': liters})
 
-    # Salvar o gráfico em um buffer de memória
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    plt.close()
-
-    # Retornar o gráfico como resposta HTTP
-    return HttpResponse(buffer, content_type='image/png')
+def grafico_page(request):
+    return render(request, 'tracker/grafico.html')
 
 def water_consumption_list(request):
     query = request.GET.get('q', '')  # Obtém o termo de busca
