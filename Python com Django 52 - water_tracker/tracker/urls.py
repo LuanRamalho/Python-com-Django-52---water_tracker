@@ -7,4 +7,5 @@ urlpatterns = [
     path('list/', views.water_consumption_list, name='water_consumption_list'),
     path('edit/<int:pk>/', views.edit_water_consumption, name='edit_water_consumption'),
     path('delete/<int:pk>/', views.delete_water_consumption, name='delete_water_consumption'),
+    path('grafico/', views.grafico_page, name='grafico_page')
 ]
