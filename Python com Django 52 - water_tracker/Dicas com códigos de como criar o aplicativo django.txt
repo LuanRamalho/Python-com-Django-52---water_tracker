@@ -5,15 +5,17 @@ Criar um novo aplicativo Django
 cd water_tracker
 python manage.py startapp tracker
 
-Criar e aplicar as migra��es do banco de dados
+Criar e aplicar as migrações do banco de dados
 python manage.py makemigrations
 python manage.py migrate
 
-Criar um superusu�rio para acessar o admin
+Criar um superusuário para acessar o admin
 python manage.py createsuperuser
 
 Executar o servidor de desenvolvimento
 python manage.py runserver
 
 Ao conectar o servidor, acesse:
-http:127.0.0.1:8000
+http:127.0.0.1:8000/add -> Para adicionar dados dos litros consumidos
+http://127.0.0.1:8000/list/ -> Para acessar o histórico de consumo de água
+http://127.0.0.1:8000/grafico/ -> Para acessar o gráfico de consumo de água
